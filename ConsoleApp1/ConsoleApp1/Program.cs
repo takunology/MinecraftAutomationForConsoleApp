@@ -19,21 +19,21 @@ namespace ConsoleApp1
 
         static async Task Main(string[] args)
         {
-            Console.WriteLine("0:ブロックを積む 1:家を建てる");
+            Console.WriteLine("0:ブロックを積む 1:家を建てる 2:湧き潰し");
             var Select = int.Parse(Console.ReadLine());
 
             switch (Select)
             {
                 case 0:
-                    await GetPosition();
                     await PutBlock();
                     break;
                 case 1:
-                    await GetPosition();
                     await Building();
                     break;
+                case 2:
+                    await PutTorches();
+                    break;
             }
-
         }
 
         static async Task GetPosition()
@@ -58,6 +58,7 @@ namespace ConsoleApp1
 
         static async Task PutBlock()
         {
+            await GetPosition();
             double X = PlayerPosition[0];
             double Y = PlayerPosition[1];
             double Z = PlayerPosition[2];
@@ -80,6 +81,7 @@ namespace ConsoleApp1
 
         static async Task Building()
         {
+            await GetPosition();
             //建築用のインスタンス
             ConvertFromExcel convertFromExcel = new ConvertFromExcel();
             convertFromExcel.ExcelOpen(); //ファイル読み込み
@@ -102,6 +104,57 @@ namespace ConsoleApp1
                     }
                 }
             }
+        }
+
+        static async Task PutTorches()
+        {
+            await GetPosition();
+
+            double X = PlayerPosition[0];
+            double Y = PlayerPosition[1];
+            double Z = PlayerPosition[2];
+            //プレイヤーを中心に100マス×100マスの範囲で湧き潰し            
+            int RangeX = 100;
+            int RangeZ = 100;
+            string BlockName = "torch";
+            string SearchBlock = "air";
+
+            for(int i = 0; i < RangeX; i++)
+            {
+                if(i % 7 == 0) //7の倍数ごとに設置
+                {
+                    for(int j = 0; j < RangeZ; j++)
+                    {
+                        if(j % 7 == 0)
+                        {   //初期値はプレイヤー座標
+                            for(int k = (int)Y; k < (255 - (int)Y); k++)
+                            {   //ブロックを調べるコマンド
+                                string Search = $"/testforblock {X + i} {k} {Z + j} {SearchBlock}";
+                                var result = await connection.SendCommandAsync(Search);
+                                Console.WriteLine(result);
+                                await Task.Delay(5);
+                                //文字列検索 空気or草なら松明を置ける
+                                if (result.Contains("Successfully") || result.Contains("tallgrass"))
+                                {
+                                    //草だったら刈る
+                                    if (result.Contains("tallgrass"))
+                                    {   
+                                        string Cut = $"/setblock {X + i} {k} {Z + j} air";
+                                        await connection.SendCommandAsync(Cut);
+                                    }
+                                    //松明を置くコマンド
+                                    string PutTorch = $"/setblock {X + i} {k} {Z + j} {BlockName}";
+                                    result = await connection.SendCommandAsync(PutTorch);
+                                    Console.WriteLine(result);
+                                    await Task.Delay(5);
+                                    break; //置いたら抜け出す
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
         }
     }
 }

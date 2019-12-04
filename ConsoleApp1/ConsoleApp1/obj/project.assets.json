@@ -4853,11 +4853,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\takun\\Desktop\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+      "projectUniqueName": "F:\\GitHub\\MinecraftAutomationForConsoleApp\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
       "projectName": "ConsoleApp1",
-      "projectPath": "C:\\Users\\takun\\Desktop\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+      "projectPath": "F:\\GitHub\\MinecraftAutomationForConsoleApp\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
       "packagesPath": "C:\\Users\\takun\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\takun\\Desktop\\ConsoleApp1\\ConsoleApp1\\obj\\",
+      "outputPath": "F:\\GitHub\\MinecraftAutomationForConsoleApp\\ConsoleApp1\\ConsoleApp1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
