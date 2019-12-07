@@ -22,24 +22,33 @@ namespace ConsoleApp1
             Console.WriteLine("0:ブロックを積む 1:家を建てる 2:湧き潰し");
             var Select = int.Parse(Console.ReadLine());
 
-            switch (Select)
+            try
             {
-                case 0:
-                    await PutBlock();
-                    break;
-                case 1:
-                    await Building();
-                    break;
-                case 2:
-                    await PutTorches();
-                    break;
+                switch (Select)
+                {
+                    case 0:
+                        await PutBlock();
+                        break;
+                    case 1:
+                        await Building();
+                        break;
+                    case 2:
+                        await PutTorches();
+                        break;
+                    default:
+                        return;
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
             }
         }
 
         static async Task GetPosition()
         {
             //コマンドを投げる
-            var PlayerName = "Prau_Splacraft";
+            var PlayerName = "PlayerName";
             var command = $"/tp {PlayerName} ~ ~ ~";
             var result = await connection.SendCommandAsync(command);
             //結果の表示
@@ -52,18 +61,18 @@ namespace ConsoleApp1
             for (int i = 0; i < StrArray.Length; i++)
             {
                 PlayerPosition[i] = double.Parse(StrArray[i]);
-                //Console.WriteLine(PlayerPosition[i]);
             }
         }
 
         static async Task PutBlock()
         {
             await GetPosition();
+            //座標をコピー
             double X = PlayerPosition[0];
             double Y = PlayerPosition[1];
             double Z = PlayerPosition[2];
             string BlockName = "stone";
-
+            //1辺5マスのブロック立方体を作成
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -154,7 +163,6 @@ namespace ConsoleApp1
                     }
                 }
             }
-
         }
     }
 }

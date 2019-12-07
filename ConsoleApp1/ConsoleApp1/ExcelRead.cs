@@ -15,7 +15,6 @@ namespace ConsoleApp1
 
         public void ExcelOpen()
         {
-            //string Path = @$"{Directory.GetCurrentDirectory()}\Excel\House.xlsx";
             string Path = "../../../Excel/House.xlsx";
             var Book = WorkbookFactory.Create(Path); //参照するブックのパス
             //マイクラの座標に合わせるために x, y, z を使う                                          
